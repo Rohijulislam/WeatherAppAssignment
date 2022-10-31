@@ -2,12 +2,9 @@
 import Foundation
 import Alamofire
 
-
-
 class NetworkServiceManager: NSObject {
     private override init() {}
     static let sharedInstance = NetworkServiceManager()
-    
     
     func fetchData(lat: String, long: String, completion: @escaping (Result<ForecastResult, APIError>) -> Void) {
         let urlString = Constants.FORECAST_URL

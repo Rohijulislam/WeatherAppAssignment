@@ -8,7 +8,6 @@ class CommonUtility: NSObject {
     private override init() {}
     static let sharedInstance = CommonUtility()
     
-    
     func updateProgressView() {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setDefaultStyle(.custom)
@@ -21,7 +20,6 @@ class CommonUtility: NSObject {
         let formatter = DateFormatter()
         formatter.timeZone = .current
         formatter.dateFormat = "h:mm a"
-        
         return formatter.string(from: date)
     }
     

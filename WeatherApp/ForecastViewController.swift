@@ -73,18 +73,19 @@ class ForecastViewController: UIViewController {
     }
 }
 
+// MARK:- CoreLocationServiceDelegate
 extension ForecastViewController: CoreLocationServiceDelegate {
     func locationDidUpdated(location: CLLocation) {
         self.fetchForecastData(location: location)
     }
     
     func locationDidFailure(error: NSError) {
-        CommonUtility.sharedInstance.showAlert(title:"Error!", msg: error.userInfo["message"] as! String, controller: self)
+        CommonUtility.sharedInstance.showAlert(title:"Error!", msg: error.userInfo["message"] as? String ?? "", controller: self)
     }
     
 }
 
-// TABLE
+// MARK:- UITableViewDelegate, UITableViewDataSource
 extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -95,7 +96,6 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
         guard !forecastList.isEmpty, let first = forecastList[section].first else {
             return nil
         }
-        
         return CommonUtility.sharedInstance.dateInfo(date: first.getDate())
     }
     
@@ -105,10 +105,9 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableViewCellIdentifier") as? ForecastTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.FORECAST_TABLE_CELL_ID) as? ForecastTableViewCell else {
             return UITableViewCell()
         }
-        
         let data = forecastList[indexPath.section][indexPath.row]
         cell.configureCell(forecast: data)
         cell.accessoryType = .disclosureIndicator
@@ -119,7 +118,7 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = forecastList[indexPath.section][indexPath.row]
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        if let controller = storyBoard.instantiateViewController(withIdentifier: "ForecastDetailsViewController") as? ForecastDetailsViewController {
+        if let controller = storyBoard.instantiateViewController(withIdentifier: Constants.FORECAST_DETAILS_VC_ID) as? ForecastDetailsViewController {
             controller.forecast = data
             self.navigationController?.pushViewController(controller, animated: true)
         }

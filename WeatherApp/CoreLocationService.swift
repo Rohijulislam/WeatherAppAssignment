@@ -88,7 +88,7 @@ extension CoreLocationService: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Unable to access your location.")
+        debugPrint("Unable to access your location.")
         delegate?.locationDidFailure(error: error as NSError)
     }
     
